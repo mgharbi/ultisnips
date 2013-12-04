@@ -66,7 +66,6 @@ def _get_comment_format():
 
     return commentformat
 
-
 def make_box(twidth, bwidth=None):
     b, m, e, i = _get_comment_format()
     bwidth_inner = bwidth - 3 - max(len(b), len(i + e)) if bwidth else twidth + 2
@@ -81,6 +80,25 @@ def foldmarker():
     "Return a tuple of (open fold marker, close fold marker)"
     return vim.eval("&foldmarker").split(",")
 
+def author():
+    return "Michael Gharbi <gharbi@mit.edu>"
+
+def date():
+    import datetime
+    return datetime.date.today().strftime("%Y-%m-%d")
+
+def make_plate(twidth, bwidth=None):
+    b, m, e, i = _get_comment_format()
+    bwidth_inner = bwidth - 3 - max(len(b), len(i + e)) if bwidth else twidth + 2
+    sline = b + ' ' + bwidth_inner * '-' + '\n'
+    mline = i + m + ' ' + bwidth_inner * '-' + '\n'
+    eline = i + m + ' ' + (bwidth_inner-len(e)) * '-' + e + '\n'
+    fileName = i + m + ' ' + 'File:    '
+    auth = i + m + ' ' + 'Author:  ' + author() + '\n'
+    created = i + m + ' ' + 'Created: ' + date() 
+    emptyline = i + m + ' ' + '\n'
+    return sline, fileName, auth, created, emptyline, eline, mline
+
 endglobal
 
 snippet box "A nice box with the current comment symbol" b
@@ -90,6 +108,20 @@ snip.rv = box[0] + '\n' + box[1]
 `${1:content}`!p
 box = make_box(len(t[1]))
 snip.rv = box[2] + '\n' + box[3]`
+$0
+endsnippet
+
+snippet plate "File plate" b
+`!p
+width = int(vim.eval("&textwidth")) or 71
+plate = make_plate(len(t[1]), width)
+snip.rv = plate[0] + plate[1] + snip.fn + '\n' + plate[2] + plate[3]
+`
+`!p
+width = int(vim.eval("&textwidth")) or 71
+plate = make_plate(len(t[1]), width)
+snip.rv = plate[6] + plate[4]*3 + plate[5]
+`
 $0
 endsnippet
 
@@ -128,4 +160,15 @@ vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet.
 endsnippet
 
+snippet date
+`!p snip.rv = date()`
+endsnippet
+
+snippet filename
+`!p snip.rv = snip.fn`
+endsnippet
+
+snippet name
+`!p snip.rv = author()`
+endsnippet
 # vim:ft=snippets:

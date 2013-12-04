@@ -1,0 +1,130 @@
+snippet pr
+fprintf('${1:}\n')
+endsnippet
+
+snippet plot
+figure;
+plot(${1},'linewidth',1,'color','red')
+endsnippet
+
+snippet cl
+classdef ${1:`substitute(Filename(), '^.', '\u&', '')`} < ${2:superclass}
+
+	properties(Access = protected)
+	end
+
+	properties(Access = public)
+	end
+
+	events
+	end
+
+	methods
+	end % methods
+
+end % classdef
+endsnippet
+
+snippet fun "with output"
+function ${3:output} = ${1:function}(${2:input})
+	${4:% code}
+end % $1
+endsnippet
+
+snippet Fun "no output"
+function ${1:function}(${2:input})
+	${3:% code}
+end % $1
+endsnippet
+
+snippet if "no else"
+if ${1:% condition}
+	${2:% code}
+end
+endsnippet
+
+snippet If "with else"
+if ${1:% condition}
+	${2:% code}
+else
+	${3:% code}
+end
+endsnippet
+
+snippet for
+for ${1:% condition}
+	${2:% code}
+end
+endsnippet
+
+snippet while
+while ${1:condition}
+	${2:% code}
+end
+endsnippet
+
+snippet try
+try
+	${1:% code}
+catch
+	${2:% code}
+end
+endsnippet
+
+snippet exist "file"
+exist(${1:filename},'file')
+endsnippet
+
+snippet exist "variable"
+exist(${1:filename},'var')
+endsnippet
+
+# Test-related snippets
+snippet testcase
+classdef ${1:`!v substitute(Filename(), '^.', '\u&', '')`} < matlab.unittest.TestCase
+
+	methods(TestClassSetup)
+	end
+
+	methods(TestClassTeardown)
+	end
+
+	methods(TestMethodSetup)
+	end
+
+	methods(TestMethodTeardown)
+	end
+
+	methods(Test)
+	end
+
+end % classdef
+endsnippet
+
+snippet test
+function test${1:TestName}(testCase)
+	${2:% code}
+end
+endsnippet
+
+snippet testsuite "from class"
+TestSuite.fromClass(?${1:className})
+endsnippet
+
+snippet testsuite "from file"
+TestSuite.fromFile('${1:filename}')
+endsnippet
+
+snippet testsuite "from folder"
+TestSuite.fromFolder(?${1:folder})
+endsnippet
+
+snippet testsuite "from method"
+TestSuite.fromMethod(?${1:class},'test${2:Method}')
+endsnippet
+
+snippet tester
+import matlab.unittest.TestSuite;
+
+results = ${1:testSuite}.run
+endsnippet
